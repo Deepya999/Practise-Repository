@@ -1,0 +1,258 @@
+1.
+
+import java.util.Stack; 
+  
+public class RectArea  
+{ 
+    // The main function to find the maximum rectangular area under given 
+    // histogram with n bars 
+    static int getMaxArea(int hist[], int n)  
+    { 
+        
+        Stack<Integer> s = new Stack<>(); 
+          
+        int max_area = 0; // Initialize max area 
+        int tp;  // To store top of stack 
+        int area_with_top; // To store area with top bar as the smallest bar 
+       
+        // Run through all bars of given histogram 
+        int i = 0; 
+        while (i < n) 
+        { 
+            // If this bar is higher than the bar on top stack, push it to stack 
+            if (s.empty() || hist[s.peek()] <= hist[i]) 
+                s.push(i++); 
+       
+            else
+            { 
+                tp = s.peek();  // store the top index 
+                s.pop();  // pop the top 
+       
+                // Calculate the area with hist[tp] stack as smallest bar 
+                area_with_top = hist[tp] * (s.empty() ? i : i - s.peek() - 1); 
+       
+                // update max area, if needed 
+                if (max_area < area_with_top) 
+                    max_area = area_with_top; 
+            } 
+        } 
+       
+        
+        while (s.empty() == false) 
+        { 
+            tp = s.peek(); 
+            s.pop(); 
+            area_with_top = hist[tp] * (s.empty() ? i : i - s.peek() - 1); 
+       
+            if (max_area < area_with_top) 
+                max_area = area_with_top; 
+        } 
+       
+        return max_area; 
+  
+    } 
+      
+    // Driver program to test above function 
+    public static void main(String[] args)  
+    { 
+        int hist[] = { 6, 2, 5, 4, 5, 1, 6 }; 
+        System.out.println("Maximum area is " + getMaxArea(hist, hist.length)); 
+    } 
+} 
+
+
+2.
+
+class GFG { 
+  
+
+    static String commonPrefixUtil(String str1, String str2) { 
+        String result = ""; 
+        int n1 = str1.length(), n2 = str2.length(); 
+  
+        // Compare str1 and str2  
+        for (int i = 0, j = 0; i <= n1 - 1 && j <= n2 - 1; i++, j++) { 
+            if (str1.charAt(i) != str2.charAt(j)) { 
+                break; 
+            } 
+            result += str1.charAt(i); 
+        } 
+  
+        return (result); 
+    } 
+  
+ 
+    static String commonPrefix(String arr[], int n) { 
+        String prefix = arr[0]; 
+  
+        for (int i = 1; i <= n - 1; i++) { 
+            prefix = commonPrefixUtil(prefix, arr[i]); 
+        } 
+  
+        return (prefix); 
+    } 
+  
+// Driver program to test above function  
+    public static void main(String[] args) { 
+        String arr[] = {"geeksforgeeks", "geeks", 
+            "geek", "geezer"}; 
+        int n = arr.length; 
+  
+        String ans = commonPrefix(arr, n); 
+  
+        if (ans.length() > 0) { 
+            System.out.printf("The longest common prefix is - %s", 
+                    ans); 
+        } else { 
+            System.out.printf("There is no common prefix"); 
+        } 
+    } 
+} 
+
+3.
+
+import java.util.Scanner;
+public class Largest_Number 
+{
+    public static void main(String[] args) 
+    {
+        int n, max;
+        Scanner s = new Scanner(System.in);
+        System.out.print("Enter number of elements in the array:");
+        n = s.nextInt();
+        int a[] = new int[n];
+        System.out.println("Enter elements of array:");
+        for(int i = 0; i < n; i++)
+        {
+            a[i] = s.nextInt();
+        }
+        max = a[0];
+        for(int i = 0; i < n; i++)
+        {
+            if(max < a[i])
+            {
+                max = a[i];
+            }
+        }
+        System.out.println("Maximum value:"+max);
+    }
+}
+
+
+4.
+
+public class Solution {
+    public String simplifyPath(String path) {
+        if (path == null || path.length() == 0) {
+            return "";
+        }
+         
+        Stack<String> stack = new Stack<String>();
+         
+        int i = 0;
+        while (i < path.length()) {
+            // bypass the first /
+            while (i < path.length() && path.charAt(i) == '/') {
+                i++;
+            }
+             
+            int start = i;
+             
+            if (i == path.length()) {
+                break;
+            }
+             
+            // reach the end /
+            while(i < path.length() && path.charAt(i) != '/') {
+                i++;
+            }
+             
+            int end = i;
+             
+            String curr = path.substring(start, end);
+            if (curr.equals("..")) {
+                if (!stack.isEmpty()) {
+                    stack.pop();
+                }
+            } else if (!curr.equals(".")) {
+                stack.push(curr);
+            }
+        }
+         
+        if (stack.isEmpty()) {
+            return "/";
+        }
+         
+        StringBuilder sb = new StringBuilder();
+         
+        String[] arr = stack.toArray(new String[stack.size()]);
+        for (int j = 0; j < arr.length; j++) {
+            sb.append('/');
+            sb.append(arr[j]);
+        }
+         
+        return sb.toString();
+    }
+}
+
+
+5.
+
+import java.util.*; 
+  
+class GFG { 
+  
+    static int versionCompare(String v1, String v2) 
+    { 
+        // vnum stores each numeric part of version 
+        int vnum1 = 0, vnum2 = 0; 
+  
+        // loop untill both String are processed 
+        for (int i = 0, j = 0; (i < v1.length() 
+                                || j < v2.length());) { 
+            // Storing numeric part of 
+            // version 1 in vnum1 
+            while (i < v1.length() 
+                   && v1.charAt(i) != '.') { 
+                vnum1 = vnum1 * 10
+                        + (v1.charAt(i) - '0'); 
+                i++; 
+            } 
+  
+            // storing numeric part 
+            // of version 2 in vnum2 
+            while (j < v2.length() 
+                   && v2.charAt(j) != '.') { 
+                vnum2 = vnum2 * 10
+                        + (v2.charAt(j) - '0'); 
+                j++; 
+            } 
+  
+            if (vnum1 > vnum2) 
+                return 1; 
+            if (vnum2 > vnum1) 
+                return -1; 
+  
+            // if equal, reset variables and 
+            // go for next numeric part 
+            vnum1 = vnum2 = 0; 
+            i++; 
+            j++; 
+        } 
+        return 0; 
+    } 
+  
+    
+    public static void main(String[] args) 
+    { 
+        String version1 = "1.0.3"; 
+        String version2 = "1.0.7"; 
+  
+        if (versionCompare(version1, version2) < 0) 
+            System.out.println(version1 + " is smaller"); 
+        else if (versionCompare(version1, version2) > 0) 
+            System.out.println(version2 + " is smaller"); 
+        else
+            System.out.println("Both version are equal"); 
+    } 
+} 
