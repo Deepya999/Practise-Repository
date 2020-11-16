@@ -1,0 +1,161 @@
+package day11;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Scanner;
+
+public class Group_Anagrams {
+	public static List<List<String>> groupAnagrams(String[] strs) {
+	    List<List<String>> result = new ArrayList<List<String>>();
+	 
+	    HashMap<String, ArrayList<String>> map = new HashMap<String, ArrayList<String>>();
+	    for(String str: strs){
+	        char[] arr = new char[26];
+	        for(int i=0; i<str.length(); i++){
+	            arr[str.charAt(i)-'a']++;
+	        }
+	        String ns = new String(arr);
+	 
+	        if(map.containsKey(ns)){
+	            map.get(ns).add(str);
+	        }else{
+	            ArrayList<String> al = new ArrayList<String>();
+	            al.add(str);
+	            map.put(ns, al);
+	        }
+	    }
+	 
+	    result.addAll(map.values());
+	 System.out.println(result);
+	    return result;
+	}
+	public static void main(String[] args) {
+		Scanner s = new Scanner(System.in);
+	     System.out.println("Enter the length of array");
+	     int length = s.nextInt();
+	     String [] myArray = new String[length];
+	     System.out.println("Enter the elements of array");
+	     for(int i=0; i<length; i++ ) {
+	        myArray[i] = s.nextLine();
+	     }
+	     groupAnagrams(myArray);
+	}
+
+}
+2.
+package day11;
+
+import java.util.Scanner;
+
+public class Shortest_Palindrome {
+	public static String shortestPalindrome(String s) {
+	    int i=0; 
+	    int j=s.length()-1;
+	 
+	    while(j>=0){
+	        if(s.charAt(i)==s.charAt(j)){
+	            i++;
+	        }
+	        j--;
+	    }
+	 
+	    if(i==s.length())
+	        return s;
+	 
+	    String suffix = s.substring(i);
+	    String prefix = new StringBuilder(suffix).reverse().toString();
+	    String mid = shortestPalindrome(s.substring(0, i));
+	    return prefix+mid+suffix;
+	}
+	public static void main(String[] args) {
+	Scanner sc = new Scanner(System.in);
+	System.out.println("Enter the String");
+	String g = sc.nextLine();
+	shortestPalindrome(g);
+	}
+
+}
+3.
+package day11;
+
+import java.util.Scanner;
+
+public class Range {
+	public static int[] searchRange(int[] nums, int target) {
+	    int l=0;
+	    int r=nums.length-1;
+	 
+	    while(l<r){
+	        int m=l+(r-l)/2;
+	        if(nums[m]<target){
+	            l=m+1;
+	        }else{
+	            r=m;
+	        }
+	    }
+	 
+	    int first=l;
+	    if(l<nums.length&&nums[l]==target){
+	        l=0;
+	        r=nums.length-1;
+	        while(l<r){
+	            int m=l+(r-l+1)/2;
+	            if(nums[m]>target){
+	                r=m-1;
+	            }else{
+	                l=m;
+	            }
+	        }
+	        return new int[]{first, r};
+	    }
+	    return new int[]{-1,-1};
+	}
+	public static void main(String[] args) {
+		Scanner s = new Scanner(System.in);
+	     System.out.println("Enter the length of array");
+	     int length = s.nextInt();
+	     int [] myArray = new int[length];
+	     System.out.println("Enter the elements of array");
+	     for(int i=0; i<length; i++ ) {
+	        myArray[i] = s.nextInt();
+	     }
+	     System.out.println("Enter the target");
+	     int t = s.nextInt();
+	     searchRange(myArray,t);
+	}
+
+}
+5.
+package day11;
+
+import java.util.Scanner;
+
+public class Shortest_Palindrome {
+	public static String shortestPalindrome(String s) {
+	    int i=0; 
+	    int j=s.length()-1;
+	 
+	    while(j>=0){
+	        if(s.charAt(i)==s.charAt(j)){
+	            i++;
+	        }
+	        j--;
+	    }
+	 
+	    if(i==s.length())
+	        return s;
+	 
+	    String suffix = s.substring(i);
+	    String prefix = new StringBuilder(suffix).reverse().toString();
+	    String mid = shortestPalindrome(s.substring(0, i));
+	    return prefix+mid+suffix;
+	}
+	public static void main(String[] args) {
+	Scanner sc = new Scanner(System.in);
+	System.out.println("Enter the String");
+	String g = sc.nextLine();
+	shortestPalindrome(g);
+	}
+
+}
