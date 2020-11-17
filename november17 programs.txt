@@ -1,0 +1,179 @@
+55.
+package shortestpalindromeexample.java;
+import java.util.Scanner;
+ 
+public class ShortestPalindromeDemo {
+ 
+public static String shortestPalindrome(String str) {
+     
+int x=0;  
+int y=str.length()-1;
+     
+  while(y>=0){
+     if(str.charAt(x)==str.charAt(y)){
+          x++;
+         }
+            y--;
+  }
+ 
+if(x==str.length())
+return str;
+ 
+String suffix = str.substring(x);
+String prefix = new StringBuilder(suffix).reverse().toString();
+String mid = shortestPalindrome(str.substring(0, x));
+ 
+return prefix+mid+suffix;
+}
+ 
+public static void main(String[] args) {
+ 
+Scanner in = new Scanner(System.in);
+ 
+System.out.println("Enter a String to find out shortest palindrome");
+ 
+String str=in.nextLine();
+ 
+System.out.println("Shortest palindrome of "+str+" is "+shortestPalindrome(str));
+ 
+}
+ 
+}
+57.
+import java.io.*;
+ 
+class GFG {
+ 
+    // Function print matrix in spiral form
+    static void spiralPrint(int m, int n, int a[][])
+    {
+        int i, k = 0, l = 0;
+ 
+        /*  k - starting row index
+        m - ending row index
+        l - starting column index
+        n - ending column index
+        i - iterator
+        */
+ 
+        while (k < m && l < n) {
+            // Print the first row from the remaining rows
+            for (i = l; i < n; ++i) {
+                System.out.print(a[k][i] + " ");
+            }
+            k++;
+ 
+            // Print the last column from the remaining
+            // columns
+            for (i = k; i < m; ++i) {
+                System.out.print(a[i][n - 1] + " ");
+            }
+            n--;
+ 
+            // Print the last row from the remaining rows */
+            if (k < m) {
+                for (i = n - 1; i >= l; --i) {
+                    System.out.print(a[m - 1][i] + " ");
+                }
+                m--;
+            }
+ 
+            // Print the first column from the remaining
+            // columns */
+            if (l < n) {
+                for (i = m - 1; i >= k; --i) {
+                    System.out.print(a[i][l] + " ");
+                }
+                l++;
+            }
+        }
+    }
+ 
+    // Driver Code
+    public static void main(String[] args)
+    {
+        int R = 3;
+        int C = 6;
+        int a[][] = { { 1, 2, 3, 4, 5, 6 },
+                      { 7, 8, 9, 10, 11, 12 },
+                      { 13, 14, 15, 16, 17, 18 } };
+        
+        // Function Call
+          spiralPrint(R, C, a);
+    }
+}
+ 
+// Contributed by Pramod Kumar
+58.
+public int[][] generateMatrix(int n) {
+    int total = n*n;
+    int[][] result= new int[n][n];
+ 
+    int x=0;
+    int y=0;
+    int step = 0;
+ 
+    for(int i=0;i<total;){
+        while(y+step<n){
+            i++;
+            result[x][y]=i; 
+            y++;
+ 
+        }    
+        y--;
+        x++;
+ 
+        while(x+step<n){
+            i++;
+            result[x][y]=i;
+            x++;
+        }
+        x--;
+        y--;
+ 
+        while(y>=0+step){
+            i++;
+            result[x][y]=i;
+            y--;
+        }
+        y++;
+        x--;
+        step++;
+ 
+        while(x>=0+step){
+            i++;
+            result[x][y]=i;
+            x--;
+        }
+        x++;
+        y++;
+    }
+ 
+    return result;
+}
+59.
+public class AddMatrices {
+
+    public static void main(String[] args) {
+        int rows = 2, columns = 3;
+        int[][] firstMatrix = { {2, 3, 4}, {5, 2, 3} };
+        int[][] secondMatrix = { {-4, 5, 3}, {5, 6, 3} };
+
+        // Adding Two matrices
+        int[][] sum = new int[rows][columns];
+        for(int i = 0; i < rows; i++) {
+            for (int j = 0; j < columns; j++) {
+                sum[i][j] = firstMatrix[i][j] + secondMatrix[i][j];
+            }
+        }
+
+        // Displaying the result
+        System.out.println("Sum of two matrices is: ");
+        for(int[] row : sum) {
+            for (int column : row) {
+                System.out.print(column + "    ");
+            }
+            System.out.println();
+        }
+    }
+}
