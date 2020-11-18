@@ -1,0 +1,520 @@
+91.
+class Node { 
+    int data; 
+    Node left, right; 
+  
+    public Node(int data) 
+    { 
+        this.data = data; 
+        left = right = null; 
+    } 
+} 
+  
+// Class Index created to implement pass by reference of Index 
+class Index { 
+    int index; 
+} 
+  
+class BinaryTree { 
+    /* Recursive function to construct binary of size n 
+       from  Inorder traversal in[] and Postrder traversal 
+       post[].  Initial values of inStrt and inEnd should 
+       be 0 and n -1.  The function doesn't do any error 
+       checking for cases where inorder and postorder 
+       do not form a tree */
+    Node buildUtil(int in[], int post[], int inStrt, 
+                   int inEnd, Index pIndex) 
+    { 
+        // Base case 
+        if (inStrt > inEnd) 
+            return null; 
+  
+        /* Pick current node from Postrder traversal using 
+           postIndex and decrement postIndex */
+        Node node = new Node(post[pIndex.index]); 
+        (pIndex.index)--; 
+  
+        /* If this node has no children then return */
+        if (inStrt == inEnd) 
+            return node; 
+  
+        /* Else find the index of this node in Inorder 
+           traversal */
+        int iIndex = search(in, inStrt, inEnd, node.data); 
+  
+        /* Using index in Inorder traversal, construct left and 
+           right subtress */
+        node.right = buildUtil(in, post, iIndex + 1, inEnd, pIndex); 
+        node.left = buildUtil(in, post, inStrt, iIndex - 1, pIndex); 
+  
+        return node; 
+    } 
+  
+    // This function mainly initializes index of root 
+    // and calls buildUtil() 
+    Node buildTree(int in[], int post[], int n) 
+    { 
+        Index pIndex = new Index(); 
+        pIndex.index = n - 1; 
+        return buildUtil(in, post, 0, n - 1, pIndex); 
+    } 
+  
+    /* Function to find index of value in arr[start...end] 
+       The function assumes that value is postsent in in[] */
+    int search(int arr[], int strt, int end, int value) 
+    { 
+        int i; 
+        for (i = strt; i <= end; i++) { 
+            if (arr[i] == value) 
+                break; 
+        } 
+        return i; 
+    } 
+  
+    /* This funtcion is here just to test  */
+    void preOrder(Node node) 
+    { 
+        if (node == null) 
+            return; 
+        System.out.print(node.data + " "); 
+        preOrder(node.left); 
+        preOrder(node.right); 
+    } 
+  
+    public static void main(String[] args) 
+    { 
+        BinaryTree tree = new BinaryTree(); 
+        int in[] = new int[] { 4, 8, 2, 5, 1, 6, 3, 7 }; 
+        int post[] = new int[] { 8, 4, 5, 2, 6, 7, 3, 1 }; 
+        int n = in.length; 
+        Node root = tree.buildTree(in, post, n); 
+        System.out.println("Preorder of the constructed tree : "); 
+        tree.preOrder(root); 
+    } 
+} 
+93.
+class TreeNode {
+	int val;
+	TreeNode left;
+	TreeNode right;
+ 
+	TreeNode(int x) {
+		val = x;
+	}
+}
+ 
+public class Solution {
+	public TreeNode sortedArrayToBST(int[] num) {
+		if (num.length == 0)
+			return null;
+ 
+		return sortedArrayToBST(num, 0, num.length - 1);
+	}
+ 
+	public TreeNode sortedArrayToBST(int[] num, int start, int end) {
+		if (start > end)
+			return null;
+ 
+		int mid = (start + end) / 2;
+		TreeNode root = new TreeNode(num[mid]);
+		root.left = sortedArrayToBST(num, start, mid - 1);
+		root.right = sortedArrayToBST(num, mid + 1, end);
+ 
+		return root;
+	}
+}
+94.
+class ListNode { int val; ListNode next;
+ListNode(int x) { val = x; next = null;
+}
+94 Convert Sorted List to Binary Search Tree
+ 
+}
+// Definition for binary tree class TreeNode { int val; TreeNode left;
+TreeNode right;
+TreeNode(int x) { val = x;
+} }
+public class Solution {
+static ListNode h;
+public TreeNode sortedListToBST(ListNode head) {
+if (head == null)
+return null;
+h = head; int len = getLength(head); return sortedListToBST(0, len - 1);
+}
+// get list length public int getLength(ListNode head) {
+int len = 0; ListNode p = head;
+while (p != null) { len++; p = p.next;
+} return len;
+}
+// build tree bottom-up
+public TreeNode sortedListToBST(int start, int end) {
+if (start > end)
+return null;
+// mid
+int mid = (start + end) / 2;
+TreeNode left = sortedListToBST(start, mid - 1); TreeNode root = new TreeNode(h.val); h = h.next;
+TreeNode right = sortedListToBST(mid + 1, end);
+Program Creek
+root.left = left; root.right = right;
+return root;
+}
+
+}
+95.
+*/ public class Solution { public int minDepth(TreeNode root) { if(root == null){ return 0;
+}
+LinkedList<TreeNode> nodes = new LinkedList<TreeNode>(); LinkedList<Integer> counts = new LinkedList<Integer>();
+nodes.add(root); counts.add(1);
+while(!nodes.isEmpty()){
+TreeNode curr = nodes.remove();
+int count = counts.remove();
+if(curr.left != null){ nodes.add(curr.left); counts.add(count+1);
+}
+if(curr.right != null){ nodes.add(curr.right); counts.add(count+1);
+}
+if(curr.left == null && curr.right == null){ return count;
+} }
+return 0;
+}
+}
+96.
+public int maxPathSum(TreeNode root) {
+int max[] = new int[1]; max[0] = Integer.MIN_VALUE; calculateSum(root, max); return max[0];
+}
+public int calculateSum(TreeNode root, int[] max) {
+if (root == null)
+return 0;
+int left = calculateSum(root.left, max); int right = calculateSum(root.right, max);
+int current = Math.max(root.val, Math.max(root.val + left, root.val + right)); max[0] = Math.max(max[0], Math.max(current, left + root.val + right));
+return current;
+}
+97.
+import java.util.Scanner;
+ 
+class SBBSTNodes
+{
+    SBBSTNodes left, right;
+    int        data;
+    int        height;
+ 
+    public SBBSTNodes()
+    {
+        left = null;
+        right = null;
+        data = 0;
+        height = 0;
+    }
+ 
+    public SBBSTNodes(int n)
+    {
+ 
+        left = null;
+        right = null;
+        data = n;
+        height = 0;
+    }
+}
+ 
+class SelfBalancingBinarySearchTrees
+{
+    private SBBSTNodes root;
+ 
+    public SelfBalancingBinarySearchTrees()
+    {
+        root = null;
+    }
+ 
+    public boolean isEmpty()
+    {
+        return root == null;
+    }
+ 
+    public void clear()
+    {
+        root = null;
+    }
+ 
+    public void insert(int data)
+    {
+        root = insert(data, root);
+    }
+ 
+    private int height(SBBSTNodes t)
+    {
+ 
+        return t == null ? -1 : t.height;
+    }
+ 
+    private int max(int lhs, int rhs)
+    {
+        return lhs > rhs ? lhs : rhs;
+    }
+ 
+    private SBBSTNodes insert(int x, SBBSTNodes t)
+    {
+        if (t == null)
+            t = new SBBSTNodes(x);
+        else if (x < t.data)
+        {
+            t.left = insert(x, t.left);
+            if (height(t.left) - height(t.right) == 2)
+                if (x < t.left.data)
+                    t = rotateWithLeftChild(t);
+                else
+                    t = doubleWithLeftChild(t);
+        } else if (x > t.data)
+        {
+            t.right = insert(x, t.right);
+            if (height(t.right) - height(t.left) == 2)
+                if (x > t.right.data)
+                    t = rotateWithRightChild(t);
+                else
+                    t = doubleWithRightChild(t);
+        } else
+            ;
+        t.height = max(height(t.left), height(t.right)) + 1;
+        return t;
+    }
+ 
+    private SBBSTNodes rotateWithLeftChild(SBBSTNodes k2)
+    {
+        SBBSTNodes k1 = k2.left;
+        k2.left = k1.right;
+        k1.right = k2;
+        k2.height = max(height(k2.left), height(k2.right)) + 1;
+        k1.height = max(height(k1.left), k2.height) + 1;
+        return k1;
+    }
+ 
+    private SBBSTNodes rotateWithRightChild(SBBSTNodes k1)
+    {
+        SBBSTNodes k2 = k1.right;
+        k1.right = k2.left;
+        k2.left = k1;
+        k1.height = max(height(k1.left), height(k1.right)) + 1;
+        k2.height = max(height(k2.right), k1.height) + 1;
+        return k2;
+    }
+ 
+    private SBBSTNodes doubleWithLeftChild(SBBSTNodes k3)
+    {
+        k3.left = rotateWithRightChild(k3.left);
+        return rotateWithLeftChild(k3);
+    }
+ 
+    private SBBSTNodes doubleWithRightChild(SBBSTNodes k1)
+    {
+        k1.right = rotateWithLeftChild(k1.right);
+        return rotateWithRightChild(k1);
+    }
+ 
+    public int countNodes()
+    {
+        return countNodes(root);
+    }
+ 
+    private int countNodes(SBBSTNodes r)
+    {
+        if (r == null)
+            return 0;
+        else
+        {
+            int l = 1;
+            l += countNodes(r.left);
+            l += countNodes(r.right);
+            return l;
+        }
+    }
+ 
+    public boolean search(int val)
+    {
+        return search(root, val);
+    }
+ 
+    private boolean search(SBBSTNodes r, int val)
+    {
+        boolean found = false;
+        while ((r != null) && !found)
+        {
+            int rval = r.data;
+            if (val < rval)
+                r = r.left;
+            else if (val > rval)
+                r = r.right;
+            else
+            {
+                found = true;
+                break;
+            }
+            found = search(r, val);
+        }
+        return found;
+    }
+ 
+    public void inorder()
+    {
+        inorder(root);
+    }
+ 
+    private void inorder(SBBSTNodes r)
+    {
+        if (r != null)
+        {
+            inorder(r.left);
+            System.out.print(r.data + " ");
+            inorder(r.right);
+        }
+    }
+ 
+    public void preorder()
+    {
+ 
+        preorder(root);
+    }
+ 
+    private void preorder(SBBSTNodes r)
+    {
+        if (r != null)
+        {
+            System.out.print(r.data + " ");
+            preorder(r.left);
+            preorder(r.right);
+        }
+    }
+ 
+    public void postorder()
+    {
+        postorder(root);
+    }
+ 
+    private void postorder(SBBSTNodes r)
+    {
+        if (r != null)
+        {
+            postorder(r.left);
+            postorder(r.right);
+            System.out.print(r.data + " ");
+        }
+    }
+}
+ 
+public class Balanced_B_Tree
+{
+    public static void main(String[] args)
+    {
+        Scanner scan = new Scanner(System.in);
+ 
+        SelfBalancingBinarySearchTrees sbbst = new SelfBalancingBinarySearchTrees();
+        System.out.println("Self Balancing Tree\n");
+ 
+        int N = 10;
+        for (int i = 0; i < N; i++)
+            sbbst.insert(scan.nextInt());
+ 
+        System.out.println("\nPre-order  :");
+        sbbst.preorder();
+        System.out.println("\nIn-order   :");
+        sbbst.inorder();
+        System.out.println("\nPost-order :");
+        sbbst.postorder();
+        scan.close();
+    }
+}
+98.
+public boolean isSymmetric(TreeNode root) {
+if (root == null)
+return true;
+return isSymmetric(root.left, root.right);
+}
+public boolean isSymmetric(TreeNode l, TreeNode r) {
+if (l == null && r == null) { return true;
+} else if (r == null || l == null) { return false;
+}
+if (l.val != r.val)
+return false;
+if (!isSymmetric(l.left, r.right)) return false;
+if (!isSymmetric(l.right, r.left))
+return false;
+return true;
+}
+99.
+public class BSTIterator { Stack<TreeNode> stack;
+public BSTIterator(TreeNode root) {
+stack = new Stack<TreeNode>(); while (root != null) { stack.push(root); root = root.left;
+} } public boolean hasNext() {
+Program Creek
+return !stack.isEmpty();
+}
+public int next() { TreeNode node = stack.pop(); int result = node.val; if (node.right != null) { node = node.right; while (node != null) { stack.push(node); node = node.left;
+} } return result;
+}
+}
+100.
+class Node { 
+  
+    int data; 
+    Node left, right; 
+  
+    Node(int item) { 
+        data = item; 
+        left = right = null; 
+    } 
+} 
+  
+// class to access maximum level by reference 
+class Max_level { 
+  
+    int max_level; 
+} 
+  
+class BinaryTree { 
+  
+    Node root; 
+    Max_level max = new Max_level(); 
+  
+    // Recursive function to print right view of a binary tree. 
+    void rightViewUtil(Node node, int level, Max_level max_level) { 
+  
+        // Base Case 
+        if (node == null)  
+            return; 
+  
+        // If this is the last Node of its level 
+        if (max_level.max_level < level) { 
+            System.out.print(node.data + " "); 
+            max_level.max_level = level; 
+        } 
+  
+        // Recur for right subtree first, then left subtree 
+        rightViewUtil(node.right, level + 1, max_level); 
+        rightViewUtil(node.left, level + 1, max_level); 
+    } 
+  
+    void rightView() 
+    { 
+        rightView(root); 
+    } 
+  
+    // A wrapper over rightViewUtil() 
+    void rightView(Node node) { 
+  
+        rightViewUtil(node, 1, max); 
+    } 
+  
+    // Driver program to test the above functions 
+    public static void main(String args[]) { 
+        BinaryTree tree = new BinaryTree(); 
+        tree.root = new Node(1); 
+        tree.root.left = new Node(2); 
+        tree.root.right = new Node(3); 
+        tree.root.left.left = new Node(4); 
+        tree.root.left.right = new Node(5); 
+        tree.root.right.left = new Node(6); 
+        tree.root.right.right = new Node(7); 
+        tree.root.right.left.right = new Node(8); 
+          
+        tree.rightView(); 
+  
+        } 
+} 
+  

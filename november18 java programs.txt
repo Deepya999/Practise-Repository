@@ -1,0 +1,441 @@
+61.
+import java.util.*;
+public class SudokuCheck
+{
+  public static boolean sudokuCheck(int[][] s)
+  {
+    for(int row=0;row<9;row++)
+      for(int col=0;col<8;col++)
+      if(s[row][col]==s[row][col+1]){
+      return false;}
+     //Verifies rows
+
+    for(int col2=0;col2<9;col2++)
+      for(int row2=0;row2<8;row2++)
+      if (s[row2][col2]==s[row2+1][col2])
+      return false;
+    //verifies columns
+
+    return true;    
+  }
+
+
+  public static void main (String[] args)
+  {
+    Scanner input = new Scanner(System.in);
+
+    int[][] solution = new int [9][9];
+    System.out.println("Enter the values of a 9 X 9 Sudoku solution");
+
+    for(int i=0;i<9;i++)
+      for(int j=0;j<9;j++)
+      solution[i][j]=input.nextInt();
+    //read values into matrix
+
+
+    if(sudokuCheck(solution)==true)
+      System.out.println("The entered 9 X 9 grid is a solution to a Sudoku puzzle.");
+else
+  System.out.println("The entered 9 X 9 grid is not a solution to a Sudoku puzzle.");
+  }
+}
+
+62.
+  
+import java.io.*; 
+  
+class GFG { 
+static int n = 3; 
+  
+// Function to return minimum path falling sum 
+static int minFallingPathSum(int A[][]) 
+{ 
+  
+    // R = Row and C = Column 
+    // We begin from second last row and keep 
+    // adding maximum sum. 
+    for (int R = n - 2; R >= 0; --R) { 
+        for (int C = 0; C < n; ++C) { 
+  
+            // best = min(A[R+1][C-1], A[R+1][C], A[R+1][C+1]) 
+            int best = A[R + 1][C]; 
+            if (C > 0) 
+                best = Math.min(best, A[R + 1][C - 1]); 
+            if (C + 1 < n) 
+                best = Math.min(best, A[R + 1][C + 1]); 
+            A[R][C] = A[R][C] + best; 
+        } 
+    } 
+  
+    int ans = Integer.MAX_VALUE; 
+    for (int i = 0; i < n; ++i) 
+        ans = Math.min(ans, A[0][i]); 
+    return ans; 
+} 
+  
+// Driver program 
+public static void main (String[] args) { 
+            int A[][] = { { 1, 2, 3 }, 
+                    { 4, 5, 6 }, 
+                    { 7, 8, 9 } }; 
+  
+    // function to print required answer 
+    System.out.println( minFallingPathSum(A)); 
+    } 
+} 
+63.
+public int uniquePaths(int m, int n) { return dfs(0,0,m,n);
+}
+public int dfs(int i, int j, int m, int n){ if(i==m-1 && j==n-1){ return 1;
+}
+if(i<m-1 && j<n-1){
+return dfs(i+1,j,m,n) + dfs(i,j+1,m,n);
+}
+if(i<m-1){
+return dfs(i+1,j,m,n);
+}
+if(j<n-1){
+return dfs(i,j+1,m,n);
+}
+return 0;
+}
+64.
+public int uniquePathsWithObstacles(int[][] obstacleGrid) { if(obstacleGrid==null||obstacleGrid.length==0) return 0;
+int m = obstacleGrid.length; int n = obstacleGrid[0].length;
+if(obstacleGrid[0][0]==1||obstacleGrid[m-1][n-1]==1) return 0;
+int[][] dp = new int[m][n]; dp[0][0]=1;
+//left column for(int i=1; i<m; i++){ if(obstacleGrid[i][0]==1){ dp[i][0] = 0;
+}else{ dp[i][0] = dp[i-1][0];
+}
+}
+//top row for(int i=1; i<n; i++){ if(obstacleGrid[0][i]==1){
+Program Creek
+dp[0][i] = 0;
+}else{ dp[0][i] = dp[0][i-1];
+}
+}
+//fill up cells inside for(int i=1; i<m; i++){ for(int j=1; j<n; j++){ if(obstacleGrid[i][j]==1){ dp[i][j]=0;
+}else{ dp[i][j]=dp[i-1][j]+dp[i][j-1];
+}
+65.
+import java.util.*; 
+import java.lang.*; 
+import java.io.*; 
+  
+class Islands { 
+    // No of rows and columns 
+    static final int ROW = 5, COL = 5; 
+  
+    // A function to check if a given cell (row, col) can 
+    // be included in DFS 
+    boolean isSafe(int M[][], int row, int col, 
+                   boolean visited[][]) 
+    { 
+        // row number is in range, column number is in range 
+        // and value is 1 and not yet visited 
+        return (row >= 0) && (row < ROW) && (col >= 0) && (col < COL) && (M[row][col] == 1 && !visited[row][col]); 
+    } 
+  
+    // A utility function to do DFS for a 2D boolean matrix. 
+    // It only considers the 8 neighbors as adjacent vertices 
+    void DFS(int M[][], int row, int col, boolean visited[][]) 
+    { 
+        // These arrays are used to get row and column numbers 
+        // of 8 neighbors of a given cell 
+        int rowNbr[] = new int[] { -1, -1, -1, 0, 0, 1, 1, 1 }; 
+        int colNbr[] = new int[] { -1, 0, 1, -1, 1, -1, 0, 1 }; 
+  
+        // Mark this cell as visited 
+        visited[row][col] = true; 
+  
+        // Recur for all connected neighbours 
+        for (int k = 0; k < 8; ++k) 
+            if (isSafe(M, row + rowNbr[k], col + colNbr[k], visited)) 
+                DFS(M, row + rowNbr[k], col + colNbr[k], visited); 
+    } 
+  
+    // The main function that returns count of islands in a given 
+    // boolean 2D matrix 
+    int countIslands(int M[][]) 
+    { 
+        // Make a bool array to mark visited cells. 
+        // Initially all cells are unvisited 
+        boolean visited[][] = new boolean[ROW][COL]; 
+  
+        // Initialize count as 0 and travese through the all cells 
+        // of given matrix 
+        int count = 0; 
+        for (int i = 0; i < ROW; ++i) 
+            for (int j = 0; j < COL; ++j) 
+                if (M[i][j] == 1 && !visited[i][j]) // If a cell with 
+                { // value 1 is not 
+                    // visited yet, then new island found, Visit all 
+                    // cells in this island and increment island count 
+                    DFS(M, i, j, visited); 
+                    ++count; 
+                } 
+  
+        return count; 
+    } 
+  
+    // Driver method 
+    public static void main(String[] args) throws java.lang.Exception 
+    { 
+        int M[][] = new int[][] { { 1, 1, 0, 0, 0 }, 
+                                  { 0, 1, 0, 0, 1 }, 
+                                  { 1, 0, 0, 1, 1 }, 
+                                  { 0, 0, 0, 0, 0 }, 
+                                  { 1, 0, 1, 0, 1 } }; 
+        Islands I = new Islands(); 
+        System.out.println("Number of islands is: " + I.countIslands(M)); 
+    } }
+66.
+//process the board for(int i=0;i<m;i++){ for(int j=0; j<n; j++){ if(board[i][j] == ’O’){ board[i][j] = ’X’;
+}else if(board[i][j] == ’#’){ board[i][j] = ’O’;
+}
+}
+} }
+public void merge(char[][] board, int i, int j){ if(i<0 || i>=board.length || j<0 || j>=board[0].length) return;
+if(board[i][j] != ’O’) return; board[i][j] = ’#’;
+merge(board, i-1, j); merge(board, i+1, j); merge(board, i, j-1); merge(board, i, j+1);
+}
+67.
+import java.io.*; 
+  
+class GFG { 
+          
+    static int N = 3; 
+      
+    // Function for finding maximum sum 
+    static int maxPathSum(int tri[][], int m, int n) 
+    { 
+        // loop for bottom-up calculation 
+        for (int i = m - 1; i >= 0; i--) 
+        { 
+            for (int j = 0; j <= i; j++) 
+            { 
+                // for each element, check both 
+                // elements just below the number 
+                // and below right to the number 
+                // add the maximum of them to it 
+                if (tri[i + 1][j] > tri[i + 1][j + 1]) 
+                    tri[i][j] += tri[i + 1][j]; 
+                else
+                    tri[i][j] += tri[i + 1][j + 1]; 
+            } 
+        } 
+      
+        // return the top element 
+        // which stores the maximum sum 
+        return tri[0][0]; 
+    } 
+      
+    /* Driver program to test above functions */
+    public static void main (String[] args) 
+    { 
+        int tri[][] = { {1, 0, 0}, 
+                        {4, 8, 0}, 
+                        {1, 5, 3} }; 
+        System.out.println ( maxPathSum(tri, 2, 2)); 
+    } 
+} 
+68.
+public class ListNode { int val; ListNode next;
+ListNode(int x) { val = x; next = null;
+} }
+public class Solution { public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
+ListNode p1 = l1;
+ListNode p2 = l2;
+ListNode newHead = new ListNode(0); ListNode p3 = newHead; int val;//store sum boolean flag = false;//flag if greater than 10
+while(p1 != null || p2 != null){ //both p1 and p2 have value if(p1 != null && p2 != null){
+if(flag){
+val = p1.val + p2.val + 1;
+}else{ val = p1.val + p2.val;
+}
+//if sum >= 10 if(val >= 10 ){ flag = true;
+//if sum < 10
+}else{ flag = false;
+}
+p3.next = new ListNode(val%10); p1 = p1.next; p2 = p2.next;
+//p1 is null, because p2 is longer
+}else if(p2 != null){
+69.
+class LinkedList { 
+  
+    static Node head; // head of the list 
+  
+    /* Node Class */
+    static class Node { 
+  
+        int data; 
+        Node next; 
+  
+        // Constructor to create a new node 
+        Node(int d) 
+        { 
+            data = d; 
+            next = null; 
+        } 
+    } 
+  
+    void printlist(Node node) 
+    { 
+        if (node == null) { 
+            return; 
+        } 
+        while (node != null) { 
+            System.out.print(node.data + " -> "); 
+            node = node.next; 
+        } 
+    } 
+  
+    Node reverselist(Node node) 
+    { 
+        Node prev = null, curr = node, next; 
+        while (curr != null) { 
+            next = curr.next; 
+            curr.next = prev; 
+            prev = curr; 
+            curr = next; 
+        } 
+        node = prev; 
+        return node; 
+    } 
+  
+    void rearrange(Node node) 
+    { 
+  
+        // 1) Find the middle point using tortoise and hare method 
+        Node slow = node, fast = slow.next; 
+        while (fast != null && fast.next != null) { 
+            slow = slow.next; 
+            fast = fast.next.next; 
+        } 
+  
+        // 2) Split the linked list in two halves 
+        // node1, head of first half    1 -> 2 -> 3 
+        // node2, head of second half   4 -> 5 
+        Node node1 = node; 
+        Node node2 = slow.next; 
+        slow.next = null; 
+  
+        // 3) Reverse the second half, i.e., 5 -> 4 
+        node2 = reverselist(node2); 
+  
+        // 4) Merge alternate nodes 
+        node = new Node(0); // Assign dummy Node 
+  
+        // curr is the pointer to this dummy Node, which will 
+        // be used to form the new list 
+        Node curr = node; 
+        while (node1 != null || node2 != null) { 
+  
+            // First add the element from first list 
+            if (node1 != null) { 
+                curr.next = node1; 
+                curr = curr.next; 
+                node1 = node1.next; 
+            } 
+  
+            // Then add the element from second list 
+            if (node2 != null) { 
+                curr.next = node2; 
+                curr = curr.next; 
+                node2 = node2.next; 
+            } 
+        } 
+  
+        // Assign the head of the new list to head pointer 
+        node = node.next; 
+    } 
+  
+    public static void main(String[] args) 
+    { 
+  
+        LinkedList list = new LinkedList(); 
+        list.head = new Node(1); 
+        list.head.next = new Node(2); 
+        list.head.next.next = new Node(3); 
+        list.head.next.next.next = new Node(4); 
+        list.head.next.next.next.next = new Node(5); 
+  
+        list.printlist(head); // print original list 
+        list.rearrange(head); // rearrange list as per ques 
+        System.out.println(""); 
+        list.printlist(head); // print modified list 
+    } 
+} 
+70.
+import java.util.*; 
+  
+public class LinkedList { 
+  
+    static Node head; // head of list 
+  
+    /* Linked list Node*/
+    static class Node { 
+        int data; 
+        Node next; 
+        Node(int d) 
+        { 
+            data = d; 
+            next = null; 
+        } 
+    } 
+  
+    /* Inserts a new Node at front of the list. */
+    static public void push(int new_data) 
+    { 
+        /* 1 & 2: Allocate the Node & 
+                  Put in the data*/
+        Node new_node = new Node(new_data); 
+  
+        /* 3. Make next of new Node as head */
+        new_node.next = head; 
+  
+        /* 4. Move the head to point to new Node */
+        head = new_node; 
+    } 
+  
+    // Returns true if there is a loop in linked 
+    // list else returns false. 
+    static boolean detectLoop(Node h) 
+    { 
+        HashSet<Node> s = new HashSet<Node>(); 
+        while (h != null) { 
+            // If we have already has this node 
+            // in hashmap it means their is a cycle 
+            // (Because you we encountering the 
+            // node second time). 
+            if (s.contains(h)) 
+                return true; 
+  
+            // If we are seeing the node for 
+            // the first time, insert it in hash 
+            s.add(h); 
+  
+            h = h.next; 
+        } 
+  
+        return false; 
+    } 
+  
+    /* Driver program to test above function */
+    public static void main(String[] args) 
+    { 
+        LinkedList llist = new LinkedList(); 
+  
+        llist.push(20); 
+        llist.push(4); 
+        llist.push(15); 
+        llist.push(10); 
+  
+        /*Create loop for testing */
+        llist.head.next.next.next.next = llist.head; 
+  
+        if (detectLoop(head)) 
+            System.out.println("Loop found"); 
+        else
+            System.out.println("No Loop"); 
+    } 
+} 

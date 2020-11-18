@@ -1,0 +1,638 @@
+81.
+class LinkedList { 
+  
+    // Head of list 
+    Node head; 
+  
+    // Linked list Node 
+    class Node { 
+        int data; 
+        Node next; 
+        Node(int d) 
+        { 
+            data = d; 
+            next = null; 
+        } 
+    } 
+  
+    // Function to delete the nth node from 
+    // the end of the given linked list 
+    void deleteNode(int key) 
+    { 
+  
+        // First pointer will point to 
+        // the head of the linked list 
+        Node first = head; 
+  
+        // Second pointer will point to the 
+        // Nth node from the beginning 
+        Node second = head; 
+        for (int i = 0; i < key; i++) { 
+  
+            // If count of nodes in the given 
+            // linked list is <= N 
+            if (second.next == null) { 
+  
+                // If count = N i.e. delete the head node 
+                if (i == key - 1) 
+                    head = head.next; 
+                return; 
+            } 
+            second = second.next; 
+        } 
+  
+        // Increment both the pointers by one until 
+        // second pointer reaches the end 
+        while (second.next != null) { 
+            first = first.next; 
+            second = second.next; 
+        } 
+  
+        // First must be pointing to the 
+        // Nth node from the end by now 
+        // So, delete the node first is pointing to 
+        first.next = first.next.next; 
+    } 
+  
+    // Function to insert a new Node at front of the list 
+    public void push(int new_data) 
+    { 
+        Node new_node = new Node(new_data); 
+        new_node.next = head; 
+        head = new_node; 
+    } 
+  
+    // Function to print the linked list 
+    public void printList() 
+    { 
+        Node tnode = head; 
+        while (tnode != null) { 
+            System.out.print(tnode.data + " "); 
+            tnode = tnode.next; 
+        } 
+    } 
+  
+    // Driver code 
+    public static void main(String[] args) 
+    { 
+        LinkedList llist = new LinkedList(); 
+  
+        llist.push(7); 
+        llist.push(1); 
+        llist.push(3); 
+        llist.push(2); 
+  
+        System.out.println("\nCreated Linked list is:"); 
+        llist.printList(); 
+  
+        int N = 1; 
+        llist.deleteNode(N); 
+  
+        System.out.println("\nLinked List after Deletion is:"); 
+        llist.printList(); 
+    } 
+} 
+ 
+    // Driver Code
+    public static void main(String[] args)
+    {
+        LinkedList list = new LinkedList();
+        list.head = new Node(85);
+        list.head.next = new Node(15);
+        list.head.next.next = new Node(4);
+        list.head.next.next.next = new Node(20);
+ 
+        System.out.println("Given Linked list");
+        list.printList(head);
+        head = list.reverse(head);
+        System.out.println("");
+        System.out.println("Reversed linked list ");
+        list.printList(head);
+    }
+}
+82.
+public class TreeNode { int val; TreeNode left;
+TreeNode right;
+TreeNode(int x) { val = x; }
+}
+public class Solution { public ArrayList<Integer> preorderTraversal(TreeNode root) { ArrayList<Integer> returnList = new ArrayList<Integer>();
+if(root == null) return returnList;
+Stack<TreeNode> stack = new Stack<TreeNode>(); stack.push(root);
+while(!stack.empty()){ TreeNode n = stack.pop(); returnList.add(n.val);
+if(n.right != null){ stack.push(n.right);
+} if(n.left != null){ stack.push(n.left);
+}
+Program Creek
+} return returnList;
+}
+}
+
+83.
+import java.util.Stack;
+ 
+public class BinaryTreeInOrder {
+ 
+ 
+	public static class TreeNode
+	{
+		int data;
+		TreeNode left;
+		TreeNode right;
+		TreeNode(int data)
+		{
+			this.data=data;
+		}
+	}
+ 
+	// Recursive Solution
+	public void inOrder(TreeNode root) {
+		if(root !=  null) {
+			inOrder(root.left);
+			//Visit the node by Printing the node data  
+			System.out.printf("%d ",root.data);
+			inOrder(root.right);
+		}
+	}
+ 
+	// Iterative solution
+	public void inOrderIter(TreeNode root) {
+ 
+		if(root == null)
+			return;
+ 
+		Stack<TreeNode> s = new Stack<TreeNode>();
+		TreeNode currentNode=root;
+ 
+		while(!s.empty() || currentNode!=null){
+ 
+			if(currentNode!=null)
+			{
+				s.push(currentNode);
+				currentNode=currentNode.left;
+			}
+			else
+			{
+				TreeNode n=s.pop();
+				System.out.printf("%d ",n.data);
+				currentNode=n.right;
+			}
+		}
+	}
+ 
+	public static void main(String[] args)
+	{
+		BinaryTreeInOrder bi=new BinaryTreeInOrder();
+		// Creating a binary tree
+		TreeNode rootNode=createBinaryTree();
+		System.out.println("Using Recursive solution:");
+ 
+		bi.inOrder(rootNode);
+ 
+		System.out.println();
+		System.out.println("-------------------------");
+		System.out.println("Using Iterative solution:");
+ 
+		bi.inOrderIter(rootNode);
+	}
+ 
+	public static TreeNode createBinaryTree()
+	{
+ 
+		TreeNode rootNode =new TreeNode(40);
+		TreeNode node20=new TreeNode(20);
+		TreeNode node10=new TreeNode(10);
+		TreeNode node30=new TreeNode(30);
+		TreeNode node60=new TreeNode(60);
+		TreeNode node50=new TreeNode(50);
+		TreeNode node70=new TreeNode(70);
+ 
+		rootNode.left=node20;
+		rootNode.right=node60;
+ 
+		node20.left=node10;
+		node20.right=node30;
+ 
+		node60.left=node50;
+		node60.right=node70;
+ 
+		return rootNode;
+	}
+}
+84.
+public void postorderIter( TreeNode root) {
+		if( root == null ) return;
+ 
+		Stack<TreeNode> s = new Stack<TreeNode>( );
+		TreeNode current = root;
+ 
+		while( true ) {
+ 
+			if( current != null ) {
+				if( current.right != null ) 
+					s.push( current.right );
+				s.push( current );
+				current = current.left;
+				continue;
+			}
+ 
+			if( s.isEmpty( ) ) 
+				return;
+			current = s.pop( );
+ 
+			if( current.right != null && ! s.isEmpty( ) && current.right == s.peek( ) ) {
+				s.pop( );
+				s.push( current );
+				current = current.right;
+			} else {
+				System.out.print( current.data + " " );
+				current = null;
+			}
+		}
+	}
+ 86.
+import java.util.Queue;
+import java.util.LinkedList;
+ 
+/* Class to represent Tree node */
+class Node {
+    int data;
+    Node left, right;
+ 
+    public Node(int item) {
+        data = item;
+        left = null;
+        right = null;
+    }
+}
+ 
+/* Class to print Level Order Traversal */
+class BinaryTree {
+ 
+    Node root;
+ 
+    /* Given a binary tree. Print 
+     its nodes in level order
+     using array for implementing queue  */
+    void printLevelOrder() 
+    {
+        Queue<Node> queue = new LinkedList<Node>();
+        queue.add(root);
+        while (!queue.isEmpty()) 
+        {
+ 
+            /* poll() removes the present head.
+            For more information on poll() visit 
+            http://www.tutorialspoint.com/java/
+            util/linkedlist_poll.htm */
+            Node tempNode = queue.poll();
+            System.out.print(tempNode.data + " ");
+ 
+            /*Enqueue left child */
+            if (tempNode.left != null) {
+                queue.add(tempNode.left);
+            }
+ 
+            /*Enqueue right child */
+            if (tempNode.right != null) {
+                queue.add(tempNode.right);
+            }
+        }
+    }
+ 
+    public static void main(String args[]) 
+    {
+        /* creating a binary tree and entering 
+         the nodes */
+        BinaryTree tree_level = new BinaryTree();
+        tree_level.root = new Node(1);
+        tree_level.root.left = new Node(2);
+        tree_level.root.right = new Node(3);
+        tree_level.root.left.left = new Node(4);
+        tree_level.root.left.right = new Node(5);
+ 
+        System.out.println("Level order traversal 
+                            of binary tree is - ");
+        tree_level.printLevelOrder();
+    }
+}
+87.
+class Solution {
+    public List<List<Integer>> levelOrderBottom(TreeNode root) {
+        ArrayList<List<Integer>> result = new ArrayList<>();
+        if (root == null) {
+            return result;
+        }
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.offer(root);
+        
+        while (!queue.isEmpty()) {
+            final ArrayList<Integer> list = new ArrayList<>();
+            int size = queue.size();
+            for (int i = 0; i < size; i++) {
+                final TreeNode node = queue.poll();
+                list.add(node.val);
+                if (node.left != null) {
+                    queue.offer(node.left);
+                }
+                if (node.right != null) {
+                    queue.offer(node.right);
+                }
+            }
+            result.add(0, list);
+        }// end while
+        
+        return result;
+    }
+}
+
+/**
+ * Definition of TreeNode:
+ * public class TreeNode {
+ *     public int val;
+ *     public TreeNode left, right;
+ *     public TreeNode(int val) {
+ *         this.val = val;
+ *         this.left = this.right = null;
+ *     }
+ * }
+ */
+
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public List<List<Integer>> levelOrderBottom(TreeNode root) {
+        ArrayList<List<Integer>> result = new ArrayList<>();
+        if (root == null) {
+            return result;
+        }
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.offer(root);
+        
+        while (!queue.isEmpty()) {
+            final ArrayList<Integer> list = new ArrayList<>();
+            int size = queue.size();
+            for (int i = 0; i < size; i++) {
+                final TreeNode node = queue.poll();
+                list.add(node.val);
+                if (node.left != null) {
+                    queue.offer(node.left);
+                }
+                if (node.right != null) {
+                    queue.offer(node.right);
+                }
+            }
+            result.add(0, list);
+        }// end while
+        
+        return result;
+    }
+}
+
+/*
+Thoughts:
+Breadth first traversal. Add to 0 position every time.
+BFS uses a queue for level -> traversal completes when the queue is drained.
+Use another queue to store next level, and switch with current queue when need to be.
+*/
+class Solution {
+    public List<List<Integer>> levelOrderBottom(TreeNode root) {
+        final List<List<Integer>> result = new ArrayList<List<Integer>>();
+        if (root == null) {
+            return result;
+        }
+        Queue<TreeNode> queue = new LinkedList<>();
+        Queue<TreeNode> queueLevel = new LinkedList<>();
+        List<Integer> level = new ArrayList<>();
+        queue.add(root);
+        while(!queue.isEmpty()) {
+            final TreeNode node = queue.poll();
+            level.add(node.val);
+            if (node.left != null) {
+                queueLevel.add(node.left);
+            }
+            if (node.right != null) {
+                queueLevel.add(node.right);
+            }
+            if (queue.isEmpty()) {
+                queue = queueLevel;
+                result.add(0, level);
+                queueLevel = new LinkedList<>();
+                level = new ArrayList<>();
+            }
+        }
+        return result;
+    }
+}
+88.
+TreeNode right;
+TreeNode(int x) { val = x;
+} } public class Solution {
+public static boolean isValidBST(TreeNode root) {
+return validate(root, Integer.MIN_VALUE, Integer.MAX_VALUE);
+}
+public static boolean validate(TreeNode root, int min, int max) {
+if (root == null) {
+return true;
+}
+// not in range if (root.val <= min || root.val >= max) {
+return false;
+}
+89.
+class Node 
+{
+    int data;
+    Node left, right;
+ 
+    Node(int key)
+    {
+        data = key;
+        left = right = null;
+    }
+}
+ 
+class BinaryTree{
+     
+Node root;
+ 
+// Function to convert binary tree into
+// linked list by altering the right node
+// and making left node NULL
+public void flatten(Node node) 
+{
+     
+    // Base case - return if root is NULL
+    if (node == null)
+        return;
+ 
+    // Or if it is a leaf node
+    if (node.left == null &&
+       node.right == null)
+        return;
+ 
+    // If root.left children exists then we have
+    // to make it node.right (where node is root)
+    if (node.left != null)
+    {
+         
+        // Move left recursively
+        flatten(node.left);
+ 
+        // Store the node.right in 
+        // Node named tempNode
+        Node tempNode = node.right;
+        node.right = node.left;
+        node.left = null;
+ 
+        // Find the position to insert
+        // the stored value
+        Node curr = node.right;
+        while (curr.right != null) 
+        {
+            curr = curr.right;
+        }
+ 
+        // Insert the stored value
+        curr.right = tempNode;
+    }
+ 
+    // Now call the same function
+    // for node.right
+    flatten(node.right);
+ 
+}
+ 
+// Function for Inorder traversal
+public void inOrder(Node node)
+{
+     
+    // Base Condition
+    if (node == null)
+        return;
+ 
+    inOrder(node.left);
+    System.out.print(node.data + " ");
+    inOrder(node.right);
+}
+ 
+// Driver code
+public static void main(String[] args)
+{
+    BinaryTree tree = new BinaryTree();
+ 
+    /*    1
+        /   \
+       2     5
+      / \     \
+     3   4     6 */
+ 
+    tree.root = new Node(1);
+    tree.root.left = new Node(2);
+    tree.root.right = new Node(5);
+    tree.root.left.left = new Node(3);
+    tree.root.left.right = new Node(4);
+    tree.root.right.right = new Node(6);
+ 
+    System.out.println("The Inorder traversal after " +
+                       "flattening binary tree ");
+                        
+    tree.flatten(tree.root);
+    tree.inOrder(tree.root);
+}
+}
+ 90.
+import java.util.*; 
+  
+class GFG 
+{ 
+      
+//utility function to print contents of  
+//a vector from index i to it's end  
+static void printVector( Vector<Integer> v, int i)  
+{  
+    for (int j = i; j < v.size(); j++)  
+        System.out.print( v.get(j) + " ");  
+        System.out.println();  
+}  
+  
+// binary tree node  
+static class Node  
+{  
+    int data;  
+    Node left,right;  
+    Node(int x)  
+    {  
+        data = x;  
+        left = right = null;  
+    }  
+};  
+static Vector<Integer> path = new Vector<Integer>(); 
+  
+// This function prints all paths that have sum k  
+static void printKPathUtil(Node root, int k)  
+{  
+    // empty node  
+    if (root == null)  
+        return;  
+  
+    // add current node to the path  
+    path.add(root.data);  
+  
+    // check if there's any k sum path  
+    // in the left sub-tree.  
+    printKPathUtil(root.left, k);  
+  
+    // check if there's any k sum path  
+    // in the right sub-tree.  
+    printKPathUtil(root.right, k);  
+  
+    // check if there's any k sum path that  
+    // terminates at this node  
+    // Traverse the entire path as  
+    // there can be negative elements too  
+    int f = 0;  
+    for (int j = path.size() - 1; j >= 0; j--)  
+    {  
+        f += path.get(j);  
+  
+        // If path sum is k, print the path  
+        if (f == k)  
+            printVector(path, j);  
+    }  
+  
+    // Remove the current element from the path  
+    path.remove(path.size() - 1);  
+}  
+  
+// A wrapper over printKPathUtil()  
+static void printKPath(Node root, int k)  
+{  
+    path = new Vector<Integer>(); 
+    printKPathUtil(root, k);  
+}  
+  
+// Driver code  
+public static void main(String args[]) 
+{  
+    Node root = new Node(1);  
+    root.left = new Node(3);  
+    root.left.left = new Node(2);  
+    root.left.right = new Node(1);  
+    root.left.right.left = new Node(1);  
+    root.right = new Node(-1);  
+    root.right.left = new Node(4);  
+    root.right.left.left = new Node(1);  
+    root.right.left.right = new Node(2);  
+    root.right.right = new Node(5);  
+    root.right.right.right = new Node(2);  
+  
+    int k = 5;  
+    printKPath(root, k);  
+} 
+} 
