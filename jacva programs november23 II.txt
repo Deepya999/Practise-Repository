@@ -1,0 +1,408 @@
+111.
+public class linkedList { 
+    node head = null; 
+    // node a, b; 
+    static class node { 
+        int val; 
+        node next; 
+  
+        public node(int val) 
+        { 
+            this.val = val; 
+        } 
+    } 
+  
+    node sortedMerge(node a, node b) 
+    { 
+        node result = null; 
+        /* Base cases */
+        if (a == null) 
+            return b; 
+        if (b == null) 
+            return a; 
+  
+        /* Pick either a or b, and recur */
+        if (a.val <= b.val) { 
+            result = a; 
+            result.next = sortedMerge(a.next, b); 
+        } 
+        else { 
+            result = b; 
+            result.next = sortedMerge(a, b.next); 
+        } 
+        return result; 
+    } 
+  
+    node mergeSort(node h) 
+    { 
+        // Base case : if head is null 
+        if (h == null || h.next == null) { 
+            return h; 
+        } 
+  
+        // get the middle of the list 
+        node middle = getMiddle(h); 
+        node nextofmiddle = middle.next; 
+  
+        // set the next of middle node to null 
+        middle.next = null; 
+  
+        // Apply mergeSort on left list 
+        node left = mergeSort(h); 
+  
+        // Apply mergeSort on right list 
+        node right = mergeSort(nextofmiddle); 
+  
+        // Merge the left and right lists 
+        node sortedlist = sortedMerge(left, right); 
+        return sortedlist; 
+    } 
+  
+    // Utility function to get the middle of the linked list 
+    public static node getMiddle(node head) 
+    { 
+        if (head == null) 
+            return head; 
+  
+        node slow = head, fast = head; 
+  
+        while (fast.next != null && fast.next.next != null) { 
+            slow = slow.next; 
+            fast = fast.next.next; 
+        } 
+        return slow; 
+    } 
+  
+    void push(int new_data) 
+    { 
+        /* allocate node */
+        node new_node = new node(new_data); 
+  
+        /* link the old list off the new node */
+        new_node.next = head; 
+  
+        /* move the head to point to the new node */
+        head = new_node; 
+    } 
+  
+    // Utility function to print the linked list 
+    void printList(node headref) 
+    { 
+        while (headref != null) { 
+            System.out.print(headref.val + " "); 
+            headref = headref.next; 
+        } 
+    } 
+  
+    public static void main(String[] args) 
+    { 
+  
+        linkedList li = new linkedList(); 
+        /* 
+         * Let us create a unsorted linked list to test the functions 
+         * created. The list shall be a: 2->3->20->5->10->15 
+         */
+        li.push(15); 
+        li.push(10); 
+        li.push(5); 
+        li.push(20); 
+        li.push(3); 
+        li.push(2); 
+  
+        // Apply merge Sort 
+        li.head = li.mergeSort(li.head); 
+        System.out.print("\n Sorted Linked List is: \n"); 
+        li.printList(li.head); 
+    } 
+} 
+112.
+public class QuickSort {
+public static void main(String[] args) { int[] x = { 9, 2, 4, 7, 3, 7, 10 };
+System.out.println(Arrays.toString(x));
+int low = 0; int high = x.length - 1;
+quickSort(x, low, high);
+System.out.println(Arrays.toString(x));
+}
+public static void quickSort(int[] arr, int low, int high) {
+if (arr == null || arr.length == 0) return;
+if (low >= high) return;
+ int middle = low + (high - low) / 2; int pivot = arr[middle];
+ < pivot and right > pivot int i = low, j = high; while (i <= j) {
+while (arr[i] < pivot) {
+i++;
+}
+while (arr[j] > pivot) {
+j--;
+}
+if (i <= j) {
+int temp = arr[i]; arr[i] = arr[j]; arr[j] = temp; i++; j--;
+}
+}
+// recursively sort two sub parts if (low < j)
+quickSort(arr, low, j);
+if (high > i)
+quickSort(arr, i, high);
+}
+}
+113.
+lass ListNode {
+	int val;
+	ListNode next;
+ 
+	ListNode(int x) {
+		val = x;
+		next = null;
+	}
+}
+ 
+public class SortLinkedList {
+	public static ListNode insertionSortList(ListNode head) {
+ 
+		if (head == null || head.next == null)
+			return head;
+ 
+		ListNode newHead = new ListNode(head.val);
+		ListNode pointer = head.next;
+ 
+		// loop through each element in the list
+		while (pointer != null) {
+			// insert this element to the new list
+ 
+			ListNode innerPointer = newHead;
+			ListNode next = pointer.next;
+ 
+			if (pointer.val <= newHead.val) {
+				ListNode oldHead = newHead;
+				newHead = pointer;
+				newHead.next = oldHead;
+			} else {
+				while (innerPointer.next != null) {
+ 
+					if (pointer.val > innerPointer.val && pointer.val <= innerPointer.next.val) {
+						ListNode oldNext = innerPointer.next;
+						innerPointer.next = pointer;
+						pointer.next = oldNext;
+					}
+ 
+					innerPointer = innerPointer.next;
+				}
+ 
+				if (innerPointer.next == null && pointer.val > innerPointer.val) {
+					innerPointer.next = pointer;
+					pointer.next = null;
+				}
+			}
+ 
+			// finally
+			pointer = next;
+		}
+ 
+		return newHead;
+	}
+ 
+	public static void main(String[] args) {
+		ListNode n1 = new ListNode(2);
+		ListNode n2 = new ListNode(3);
+		ListNode n3 = new ListNode(4);
+ 
+		ListNode n4 = new ListNode(3);
+		ListNode n5 = new ListNode(4);
+		ListNode n6 = new ListNode(5);
+ 
+		n1.next = n2;
+		n2.next = n3;
+		n3.next = n4;
+		n4.next = n5;
+		n5.next = n6;
+ 
+		n1 = insertionSortList(n1);
+ 
+		printList(n1);
+ 
+	}
+ 
+	public static void printList(ListNode x) {
+		if(x != null){
+			System.out.print(x.val + " ");
+			while (x.next != null) {
+				System.out.print(x.next.val + " ");
+				x = x.next;
+			}
+			System.out.println();
+		}
+ 
+	}
+}
+114.
+class Bucket{ int low; int high; public Bucket(){ low = -1; high = -1;
+}
+}
+public int maximumGap(int[] num) {
+if(num == null || num.length < 2){
+return 0;
+ }
+int max = num[0]; 
+int min = num[0]; for(int i=1;
+ i<num.length; i++){ 
+max = Math.max(max, num[i]);
+ min = Math.min(min, num[i]);
+}
+// initialize an array of buckets
+Bucket[] buckets = new Bucket[num.length+1]; 
+for(int i=0; i<buckets.length; i++){
+buckets[i] = new Bucket();
+}
+double interval = (double) num.length / (max - min);
+ for(int i=0; i<num.length; i++){ int index = (int) ((num[i] - min) * interval);
+if(buckets[index].low == -1)
+{
+buckets[index].low = num[i]; 
+buckets[index].high = num[i];
+}
+else{
+ buckets[index].low = Math.min(buckets[index].low, num[i]);
+ buckets[index].high = Math.max(buckets[index].high, num[i]); 
+}
+}
+//scan buckets to find maximum gap int result = 0; 
+int prev = buckets[0].high; 
+for(int i=1; i<buckets.length; i++){
+if(buckets[i].low != -1){ result = Math.max(result, buckets[i].low-prev); prev = buckets[i].high;
+} 
+}
+return result;
+}
+115.
+class EDIST { 
+    static int min(int x, int y, int z) 
+    { 
+        if (x <= y && x <= z) 
+            return x; 
+        if (y <= x && y <= z) 
+            return y; 
+        else
+            return z; 
+    } 
+  
+    static int editDist(String str1, String str2, int m, int n) 
+    { 
+        
+        if (m == 0) 
+            return n; 
+  
+        
+        if (n == 0) 
+            return m; 
+  
+         
+        if (str1.charAt(m - 1) == str2.charAt(n - 1)) 
+            return editDist(str1, str2, m - 1, n - 1); 
+  
+        
+        return 1 + min(editDist(str1, str2, m, n - 1), // Insert 
+                       editDist(str1, str2, m - 1, n), // Remove 
+                       editDist(str1, str2, m - 1, n - 1) // Replace 
+                       ); 
+    } 
+116.
+public static String longestPalindrome1(String s) {
+int maxPalinLength = 0;
+
+ String longestPalindrome = null;
+
+ int length = s.length();
+
+ for (int i = 0; i < length; i++) 
+{
+for (int j = i + 1; j < length; j++)
+ { int len = j - i;
+String curr = s.substring(i, j + 1); 
+
+if (isPalindrome(curr)) {
+
+if (len > maxPalinLength) {
+
+longestPalindrome = curr; 
+maxPalinLength = len;
+}
+}
+} }
+return longestPalindrome;
+} public static boolean isPalindrome(String s) {
+for (int i = 0; i < s.length() - 1; i++) {
+
+if (s.charAt(i) != s.charAt(s.length() - 1 - i)) {
+
+return false;
+}
+}
+
+ 
+return true;
+}
+117.
+public class WordBreakProblem 
+{ 
+  
+    
+    private static Set<String> dictionary = new HashSet<>(); 
+      
+    public static void main(String []args) 
+    { 
+          
+        // ar
+        String temp_dictionary[] = {"mobile","samsung","sam","sung",  
+                            "man","mango","icecream","and",  
+                            "go","i","like","ice","cream"}; 
+                              
+        // loop to add all strings in dictionary set  
+        for (String temp :temp_dictionary) 
+        { 
+            dictionary.add(temp); 
+        } 
+          
+      
+        System.out.println(wordBreak("ilikesamsung")); 
+        System.out.println(wordBreak("iiiiiiii")); 
+        System.out.println(wordBreak("")); 
+        System.out.println(wordBreak("ilikelikeimangoiii")); 
+        System.out.println(wordBreak("samsungandmango")); 
+        System.out.println(wordBreak("samsungandmangok")); 
+          
+    } 
+      
+    
+    public static boolean wordBreak(String word) 
+    { 
+        int size = word.length(); 
+          
+        // base case 
+        if (size == 0) 
+        return true; 
+          
+        //else check for all words 
+        for (int i = 1; i <= size; i++) 
+        { 
+            
+            if (dictionary.contains(word.substring(0,i)) &&  
+                    wordBreak(word.substring(i,size))) 
+            return true; 
+        } 
+          
+        // if all cases failed then return false 
+        return false; 
+    } 
+} 
+  
+
+  
+    public static void main(String args[]) 
+    { 
+        String str1 = "sunday"; 
+        String str2 = "saturday"; 
+  
+        System.out.println(editDist(str1, str2, str1.length(), str2.length())); 
+    } 
+} 
+ 
+ 

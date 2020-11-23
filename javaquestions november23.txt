@@ -1,0 +1,543 @@
+101.
+public class Trie {
+    private TrieNode root;
+ 
+    public Trie() {
+        root = new TrieNode();
+    }
+ 
+    // Inserts a word into the trie.
+    public void insert(String word) {
+        HashMap<Character, TrieNode> children = root.children;
+ 
+        for(int i=0; i<word.length(); i++){
+            char c = word.charAt(i);
+ 
+            TrieNode t;
+            if(children.containsKey(c)){
+                    t = children.get(c);
+            }else{
+                t = new TrieNode(c);
+                children.put(c, t);
+            }
+ 
+            children = t.children;
+ 
+            //set leaf node
+            if(i==word.length()-1)
+                t.isLeaf = true;    
+        }
+    }
+ 
+    // Returns if the word is in the trie.
+    public boolean search(String word) {
+        TrieNode t = searchNode(word);
+ 
+        if(t != null && t.isLeaf) 
+            return true;
+        else
+            return false;
+    }
+ 
+    // Returns if there is any word in the trie
+    // that starts with the given prefix.
+    public boolean startsWith(String prefix) {
+        if(searchNode(prefix) == null) 
+            return false;
+        else
+            return true;
+    }
+ 
+    public TrieNode searchNode(String str){
+        Map<Character, TrieNode> children = root.children; 
+        TrieNode t = null;
+        for(int i=0; i<str.length(); i++){
+            char c = str.charAt(i);
+            if(children.containsKey(c)){
+                t = children.get(c);
+                children = t.children;
+            }else{
+                return null;
+            }
+        }
+ 
+        return t;
+    }
+}
+102.
+public class Trie { 
+      
+    // Alphabet size (# of symbols) 
+    static final int ALPHABET_SIZE = 26; 
+      
+    // trie node 
+    static class TrieNode 
+    { 
+        TrieNode[] children = new TrieNode[ALPHABET_SIZE]; 
+       
+        // isEndOfWord is true if the node represents 
+        // end of a word 
+        boolean isEndOfWord; 
+          
+        TrieNode(){ 
+            isEndOfWord = false; 
+            for (int i = 0; i < ALPHABET_SIZE; i++) 
+                children[i] = null; 
+        } 
+    }; 
+       
+    static TrieNode root;  
+      
+    // If not present, inserts key into trie 
+    // If the key is prefix of trie node,  
+    // just marks leaf node 
+    static void insert(String key) 
+    { 
+        int level; 
+        int length = key.length(); 
+        int index; 
+       
+        TrieNode pCrawl = root; 
+       
+        for (level = 0; level < length; level++) 
+        { 
+            index = key.charAt(level) - 'a'; 
+            if (pCrawl.children[index] == null) 
+                pCrawl.children[index] = new TrieNode(); 
+       
+            pCrawl = pCrawl.children[index]; 
+        } 
+       
+        // mark last node as leaf 
+        pCrawl.isEndOfWord = true; 
+    } 
+       
+    // Returns true if key presents in trie, else false 
+    static boolean search(String key) 
+    { 
+        int level; 
+        int length = key.length(); 
+        int index; 
+        TrieNode pCrawl = root; 
+       
+        for (level = 0; level < length; level++) 
+        { 
+            index = key.charAt(level) - 'a'; 
+       
+            if (pCrawl.children[index] == null) 
+                return false; 
+       
+            pCrawl = pCrawl.children[index]; 
+        } 
+       
+        return (pCrawl != null && pCrawl.isEndOfWord); 
+    } 
+       
+    // Driver 
+    public static void main(String args[]) 
+    { 
+        // Input keys (use only 'a' through 'z' and lower case) 
+        String keys[] = {"the", "a", "there", "answer", "any", 
+                         "by", "bye", "their"}; 
+       
+        String output[] = {"Not present in trie", "Present in trie"}; 
+       
+       
+        root = new TrieNode(); 
+       
+        // Construct trie 
+        int i; 
+        for (i = 0; i < keys.length ; i++) 
+            insert(keys[i]); 
+       
+        // Search for different keys 
+        if(search("the") == true) 
+            System.out.println("the --- " + output[1]); 
+        else System.out.println("the --- " + output[0]); 
+          
+        if(search("these") == true) 
+            System.out.println("these --- " + output[1]); 
+        else System.out.println("these --- " + output[0]); 
+          
+        if(search("their") == true) 
+            System.out.println("their --- " + output[1]); 
+        else System.out.println("their --- " + output[0]); 
+          
+        if(search("thaw") == true) 
+            System.out.println("thaw --- " + output[1]); 
+        else System.out.println("thaw --- " + output[0]); 
+         
+    } 
+} 
+103.
+class MinHeapNode 
+{ 
+    int element; // The element to be stored 
+      
+     // index of the array from  
+     // which the element is taken 
+    int i; 
+      
+    // index of the next element  
+    // to be picked from array 
+    int j;  
+  
+    public MinHeapNode(int element, int i, int j) 
+    { 
+        this.element = element; 
+        this.i = i; 
+        this.j = j; 
+    } 
+}; 
+  
+// A class for Min Heap 
+class MinHeap 
+{ 
+    MinHeapNode[] harr; // Array of elements in heap 
+    int heap_size; // Current number of elements in min heap 
+  
+    // Constructor: Builds a heap from  
+    // a given array a[] of given size 
+    public MinHeap(MinHeapNode a[], int size) 
+    { 
+        heap_size = size; 
+        harr = a; 
+        int i = (heap_size - 1)/2; 
+        while (i >= 0) 
+        { 
+            MinHeapify(i); 
+            i--; 
+        } 
+    } 
+  
+    // A recursive method to heapify a subtree  
+    // with the root at given index This method 
+    // assumes that the subtrees are already heapified 
+    void MinHeapify(int i) 
+    { 
+        int l = left(i); 
+        int r = right(i); 
+        int smallest = i; 
+        if (l < heap_size && harr[l].element < harr[i].element) 
+            smallest = l; 
+        if (r < heap_size && harr[r].element < harr[smallest].element) 
+            smallest = r; 
+        if (smallest != i) 
+        { 
+            swap(harr, i, smallest); 
+            MinHeapify(smallest); 
+        } 
+    } 
+  
+    // to get index of left child of node at index i 
+    int left(int i) { return (2*i + 1); } 
+  
+    // to get index of right child of node at index i 
+    int right(int i) { return (2*i + 2); } 
+  
+    // to get the root 
+    MinHeapNode getMin()  
+    { 
+        if(heap_size <= 0)  
+        { 
+            System.out.println("Heap underflow"); 
+            return null; 
+        } 
+        return harr[0]; 
+    } 
+  
+    
+    void replaceMin(MinHeapNode root) { 
+        harr[0] = root; 
+        MinHeapify(0); 
+    } 
+  
+    // A utility function to swap two min heap nodes 
+    void swap(MinHeapNode[] arr, int i, int j) { 
+        MinHeapNode temp = arr[i]; 
+        arr[i] = arr[j]; 
+        arr[j] = temp; 
+    } 
+  
+    // A utility function to print array elements 
+    static void printArray(int[] arr) { 
+        for(int i : arr) 
+            System.out.print(i + " "); 
+        System.out.println(); 
+    } 
+  
+     
+    static void mergeKSortedArrays(int[][] arr, int k)  
+    { 
+        MinHeapNode[] hArr = new MinHeapNode[k]; 
+        int resultSize = 0; 
+        for(int i = 0; i < arr.length; i++)  
+        { 
+            MinHeapNode node = new MinHeapNode(arr[i][0],i,1); 
+            hArr[i] = node; 
+            resultSize += arr[i].length; 
+        } 
+  
+       
+        MinHeap mh = new MinHeap(hArr, k); 
+  
+        int[] result = new int[resultSize];     // To store output array 
+  
+        for(int i = 0; i < resultSize; i++)  
+        { 
+  
+            // Get the minimum element and store it in result 
+            MinHeapNode root = mh.getMin(); 
+            result[i] = root.element; 
+  
+            
+            if(root.j < arr[root.i].length) 
+                root.element = arr[root.i][root.j++]; 
+            // If root was the last element of its array 
+            else
+                root.element = Integer.MAX_VALUE; 
+  
+            // Replace root with next element of array  
+            mh.replaceMin(root); 
+        } 
+  
+        printArray(result); 
+  
+    } 
+  
+    // Driver code 
+    public static void main(String args[]){ 
+        int[][] arr= {{2, 6, 12, 34}, 
+                {1, 9, 20, 1000}, 
+                {23, 34, 90, 2000}}; 
+  
+        System.out.println("Merged array is :"); 
+  
+        mergeKSortedArrays(arr,arr.length); 
+    } 
+}; 
+  104.
+public void connect(TreeLinkNode root) {
+TreeLinkNode top = root;//the previous level, just use a better name for root
+while(top != null){
+TreeLinkNode levelFirst = null; p = null;//cursor for node on each level
+while(top != null){
+//record the firston each level if(levelFirst == null){ levelFirst = top.left;
+}
+if(top.left!=null){ if(p!=null)
+p.next = top.left;
+p=top.left;
+}
+if(top.right!=null){ if(p!=null)
+p.next = top.right;
+p = top.right;
+}
+top = top.next;
+}
+top = levelFirst;
+}
+}
+105.
+public int numTrees(int n) {
+	int[] count = new int[n + 1];
+ 
+	count[0] = 1;
+	count[1] = 1;
+ 
+	for (int i = 2; i <= n; i++) {
+		for (int j = 0; j <= i - 1; j++) {
+			count[i] = count[i] + count[j] * count[i - j - 1];
+		}
+	}
+ 
+	return count[n];
+}
+105.
+public List<TreeNode> generateTrees(int n) {
+    if(n==0){
+        return new ArrayList<TreeNode>();
+    }
+ 
+    return helper(1, n);
+}
+ 
+public List<TreeNode> helper(int m, int n){
+    List<TreeNode> result = new ArrayList<TreeNode>();
+    if(m>n){
+        result.add(null);
+        return result;
+    }
+ 
+    for(int i=m; i<=n; i++){
+        List<TreeNode> ls = helper(m, i-1);
+        List<TreeNode> rs = helper(i+1, n);
+        for(TreeNode l: ls){
+            for(TreeNode r: rs){
+                TreeNode curr = new TreeNode(i);
+                curr.left=l;
+                curr.right=r;
+                result.add(curr);
+            }
+        }
+    }
+ 
+    return result;
+}
+106.
+public int sumNumbers(TreeNode root) {
+    int result = 0;
+    if(root==null)
+        return result;
+ 
+    ArrayList<ArrayList<TreeNode>> all = new ArrayList<ArrayList<TreeNode>>();
+    ArrayList<TreeNode> l = new ArrayList<TreeNode>();
+    l.add(root);
+    dfs(root, l, all);
+ 
+    for(ArrayList<TreeNode> a: all){
+        StringBuilder sb = new StringBuilder();
+        for(TreeNode n: a){
+            sb.append(String.valueOf(n.val));
+        }
+        int currValue = Integer.valueOf(sb.toString());
+        result = result + currValue;
+    }
+ 
+    return result;
+}
+ 
+public void dfs(TreeNode n, ArrayList<TreeNode> l,  ArrayList<ArrayList<TreeNode>> all){
+    if(n.left==null && n.right==null){
+        ArrayList<TreeNode> t = new ArrayList<TreeNode>();
+        t.addAll(l);
+        all.add(t);
+    }
+ 
+    if(n.left!=null){
+        l.add(n.left);
+        dfs(n.left, l, all);
+        l.remove(l.size()-1);
+    }
+ 
+    if(n.right!=null){
+        l.add(n.right);
+        dfs(n.right, l, all);
+        l.remove(l.size()-1);
+    }
+ 
+}
+107.
+public int sumNumbers(TreeNode root) {
+    int result = 0;
+    if(root==null)
+        return result;
+ 
+    ArrayList<ArrayList<TreeNode>> all = new ArrayList<ArrayList<TreeNode>>();
+    ArrayList<TreeNode> l = new ArrayList<TreeNode>();
+    l.add(root);
+    dfs(root, l, all);
+ 
+    for(ArrayList<TreeNode> a: all){
+        StringBuilder sb = new StringBuilder();
+        for(TreeNode n: a){
+            sb.append(String.valueOf(n.val));
+        }
+        int currValue = Integer.valueOf(sb.toString());
+        result = result + currValue;
+    }
+ 
+    return result;
+}
+ 
+public void dfs(TreeNode n, ArrayList<TreeNode> l,  ArrayList<ArrayList<TreeNode>> all){
+    if(n.left==null && n.right==null){
+        ArrayList<TreeNode> t = new ArrayList<TreeNode>();
+        t.addAll(l);
+        all.add(t);
+    }
+ 
+    if(n.left!=null){
+        l.add(n.left);
+        dfs(n.left, l, all);
+        l.remove(l.size()-1);
+    }
+ 
+    if(n.right!=null){
+        l.add(n.right);
+        dfs(n.right, l, all);
+        l.remove(l.size()-1);
+    }
+ 
+}
+108.
+public class Solution { public UndirectedGraphNode cloneGraph(UndirectedGraphNode node) { 
+if(node == null) return null;
+LinkedList<UndirectedGraphNode> queue = new
+LinkedList<UndirectedGraphNode>();
+HashMap<UndirectedGraphNode, UndirectedGraphNode> map = new
+HashMap<UndirectedGraphNode,UndirectedGraphNode>();
+ UndirectedGraphNode newHead = new UndirectedGraphNode(node.label);
+queue.add(node); 
+map.put(node, newHead);
+Program Creek
+while(!queue.isEmpty()){
+UndirectedGraphNode curr = queue.pop();
+ArrayList<UndirectedGraphNode> currNeighbors = curr.neighbors;
+for(UndirectedGraphNode aNeighbor: currNeighbors){
+ if(!map.containsKey(aNeighbor)){
+UndirectedGraphNode copy = new
+UndirectedGraphNode(aNeighbor.label);
+ map.put(aNeighbor,copy);
+ map.get(curr).neighbors.add(copy); 
+queue.add(aNeighbor);
+}
+else{ map.get(curr).neighbors.add(map.get(aNeighbor));
+}
+}
+} return newHead;
+}
+}
+109.
+public boolean canFinish(int numCourses, int[][] prerequisites) { if(prerequisites == null){ throw new IllegalArgumentException("illegal prerequisites array");
+} int len = prerequisites.length;
+if(numCourses == 0 || len == 0){ return true;
+}
+//track visited courses int[] visit = new int[numCourses];
+// use the map to store what courses depend on a course
+HashMap<Integer,ArrayList<Integer>> map = new
+HashMap<Integer,ArrayList<Integer>>(); for(int[] a: prerequisites){ if(map.containsKey(a[1])){ map.get(a[1]).add(a[0]);
+}else{
+ArrayList<Integer> l = new ArrayList<Integer>(); l.add(a[0]); map.put(a[1], l);
+} }
+for(int i=0; i<numCourses; i++){ if(!canFinishDFS(map, visit, i)) return false;
+}
+return true;
+}
+private boolean canFinishDFS(HashMap<Integer,ArrayList<Integer>> map, int[] visit, int i){
+if(visit[i]==-1) return false;
+if(visit[i]==1) return true;
+visit[i]=-1; if(map.containsKey(i)){ for(int j: map.get(i)){ if(!canFinishDFS(map, visit, j)) return false;
+}
+}
+
+visit[i]=1;
+return true;
+}
+110.
+import java.util.Arrays; 
+  
+public class SortExample 
+{ 
+    public static void main(String[] args) 
+    { 
+        // Our arr contains 8 elements 
+        int[] arr = {13, 7, 6, 45, 21, 9, 101, 102}; 
+  
+        Arrays.sort(arr); 
+  
+        System.out.printf("Modified arr[] : %s", 
+                          Arrays.toString(arr)); 
+    } 
+} ssss
+
+
